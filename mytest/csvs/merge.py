@@ -13,6 +13,8 @@ def load_data(file_path):
     
     try:
         df = pd.read_csv(file_path)
+        if('conn' not in file_path):
+            df = df.drop(columns=['ts'])  # Drop 'ts' column if it exists
         df = df.replace('-', float('nan'))  
         return df
     except Exception as e:
@@ -77,7 +79,7 @@ def main():
     dns_df = load_data(dns_path)
 
     # Common merge columns
-    common_columns = ['ts', 'uid', 'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p']
+    common_columns = ['uid', 'id.orig_h', 'id.orig_p', 'id.resp_h', 'id.resp_p']
     
     # Extended features data
     extendted_path = os.path.join(args.input_dir, 'extended_features.csv')
